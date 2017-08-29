@@ -1,0 +1,46 @@
+<template name="datiprincipali">
+
+    <div id="window" class="hide">
+      <h2>PERIODO VISUALIZZATO</h2>
+      <form style="text-align:left; margin-left:75px;margin-top:-10px">
+        <label class="newradio">
+          <input type="radio" class="radio" value="Stato Attuale" checked>
+          <span class="custom tempo-reale"><span>Stato Attuale</span></span>
+        </label>
+        <br>
+        <label class="newradio">
+          <input type="radio" class="radio" value="Ultime 24h">
+          <span class="custom 24-ore"><span>Ultime 24h</span></span>
+        </label>
+        <br>
+        <label class="newradio">
+          <input type="radio" class="radio" value="Ultima settimana">
+          <span class="custom tempo-reale"><span>Ultima settimana</span></span>
+        </label>
+        <br>
+        <label class="newradio">
+          <input type="radio" class="radio" value="Ultimo mese">
+          <span class="custom tempo-reale"><span>Ultimo mese</span></span>
+        </label>
+        <br>
+        <label class="newradio">
+          <input type="radio" class="radio" value="Altro periodo..">
+          <span class="custom tempo-reale"><span>Altro periodo..</span></span>
+        </label>
+        <div style="padding-left:70px;margin-top:-5px;">
+        <input type="date" id="datestart" value="2017-04-01">
+        <input type="date" id="dateend" value="2017-05-10">
+        </div>
+      </form>
+    </div>
+    <div id="overflow" class="hide"></div>
+
+    <div id="section">
+
+    <div class="bar bar-dati dati-top"><div class="v-center"><div id="title-dati-top">Produzione</div></div></div>
+    <div class="bar bar-dati dati-middle"><div class="v-center"><div id="title-dati-middle">Consumo</div></div></div>
+
+  </div>
+
+
+</template>

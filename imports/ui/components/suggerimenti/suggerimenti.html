@@ -1,0 +1,113 @@
+<template name="suggerimenti">
+
+    <div id="window" class="hide">
+      <h2>PERIODO VISUALIZZATO</h2>
+      <form style="text-align:left; margin-left:75px;margin-top:-10px">
+        <label class="newradio">
+          <input type="radio" class="radio" value="Stato Attuale" checked>
+          <span class="custom tempo-reale"><span>Stato Attuale</span></span>
+        </label>
+        <br>
+        <label class="newradio">
+          <input type="radio" class="radio" value="Ultime 24h">
+          <span class="custom 24-ore"><span>Ultime 24h</span></span>
+        </label>
+        <br>
+        <label class="newradio">
+          <input type="radio" class="radio" value="Ultima settimana">
+          <span class="custom tempo-reale"><span>Ultima settimana</span></span>
+        </label>
+        <br>
+        <label class="newradio">
+          <input type="radio" class="radio" value="Ultimo mese">
+          <span class="custom tempo-reale"><span>Ultimo mese</span></span>
+        </label>
+        <br>
+        <label class="newradio">
+          <input type="radio" class="radio" value="Altro periodo..">
+          <span class="custom tempo-reale"><span>Altro periodo..</span></span>
+        </label>
+        <div style="padding-left:70px;margin-top:-5px;">
+        <input type="date" id="datestart" value="2017-04-01">
+        <input type="date" id="dateend" value="2017-05-10">
+        </div>
+      </form>
+    </div>
+    <div id="overflow" class="hide"></div>
+
+    <div id="section">
+
+    <div class="bar top-bar"><div class="v-center"><div id="title">Stato Attuale</div></div></div>
+    <div class="core">
+        <div class="container produzione">
+          <div class="tile">
+            <div class="hoverbg"></div>
+            <div class="intestazione">
+              <div class="o-center" style="background:transparent;left:46.5%">
+                <div class="tile-icon {{ColorProduzione}}"></div>
+                <div style="height:25px"></div>
+                <div style="display:block;margin-left:-116px">PRODUZIONE</div>
+                <span class="fascia {{ColorProduzione}}">{{ValProduzione}} kWh</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container consumo">
+          <div class="tile">
+            <div class="hoverbg"></div>
+            <div class="intestazione">
+              <div class="o-center" style="background:transparent;left:46.5%">
+                <div class="tile-icon {{ColorConsumo}}"></div>
+                <div style="height:25px"></div>
+                <div style="display:block;margin-left:-100px">CONSUMO</div>
+                <span class="fascia {{ColorConsumo}}">{{ValConsumo}} kWh</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container rete">
+          <div class="tile">
+            <div class="hoverbg"></div>
+            <div class="intestazione">
+              <div class="o-center" style="background:transparent;left:46.5%">
+                <div class="tile-icon {{ColorRete}}"></div>
+                <div style="height:25px"></div>
+                <div style="display:block;margin-left:-120px">SCAMBIO RETE</div>
+                <span class="fascia {{ColorRete}}">{{ValRete}} kWh</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container altro">
+          <div class="tile">
+            <div class="hoverbg"></div>
+            <div class="intestazione">
+              <div class="o-center" style="background:transparent;left:46.5%">
+                <div class="tile-icon {{ColorBatteria}}"></div>
+                  <div style="height:25px"></div>
+                <div style="display:block;margin-left:-130px">ALTRE OPZIONI</div>
+                <span class="fascia {{ColorBatteria}} hide">{{ValBatteria}} kWh</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="v-center"></div>
+        <div class="o-center"></div>
+    </div>
+    <div class="bar bottom-bar">
+          <div style="height:7px"></div>
+      <div style="margin-top:-10px">OGGI AVRESTI RISPARMIATO Circa:</div>
+      <div style="height:10px"></div>
+      <div class="inline" style="margin-left:24px"><img src="img/rifornitore.png" /></div>
+      <div class="puntini inline">.......................................................................................................................................................................................................................................
+      </div>
+      <div class="inline" style="margin-left:2px; margin-top:4px"><img src="img/macchina.png" /></div>
+      <div style="position:absolute; top:50%;left:160px">120 Km</div>
+      <div style="position:absolute; top:48%;right:50px;font-size:56px; color:#090">€ 23,00</div>
+    </div>
+    <div class="bar options-bar hide"></div>
+
+  </div>
+
+
+</template>
