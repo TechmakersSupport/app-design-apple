@@ -19,8 +19,8 @@ div.inline { float:left; }
 
 .hide{visibility:hidden}
 
-.v-center{position:absolute; top:50%; width:100%; background: black}
-.o-center{position:absolute; left:50%; height:100%; background: black}
+.v-center{position:absolute; top:50%; width:100%}
+.o-center{position:absolute; left:50%; height:100%}
 
 .navtile{
   background:#f9f9f9;
@@ -44,28 +44,34 @@ bottom:0px;
 
 .content{position:absolute; top:0px; height:93%;width:100%;}
 
-.top-bar {top:0px;height:13%}
+.top-bar {top:0px;height:12%}
 
-.bar-dati {height:10%}
-.dati-top {top:0px;}
-.dati-middle {top:50%;}
+.bar-dati {height:9%}
+.dati-top {top:12%;}
+.dati-middle {top:57%;}
 
 
 #title {font-size:120px;margin-top:-71px;padding:0; background:white; color:black}
 
-#title-dati-top {text-align:left;font-size:90px;margin-top:-56px;padding-left:4.4%; background:white; color:black}
-#title-dati-middle {text-align:right;font-size:90px;margin-top:-56px;padding-right:4.4%; background:white; color:black}
+.title-dati {
+  font-size:84px;margin-top:-55px;
+  color:grey;
+  border-bottom:solid 1px;
+  border-color:#777
+}
+#title-dati-top {text-align:left;padding-left:3%;}
+#title-dati-middle {text-align:right;padding-right:3%;}
 
 .core
   {
     position:absolute;
-    top:13%;
-    height:75%;
+    top:12%;
+    height:76%;
     width:100%;
     background:#e2e2e2;
     font-size:36px;
   }
-.bottom-bar {overflow:hidden;height:12%;bottom:0; padding-top:4px;background:#f3ffef}
+.bottom-bar {overflow:hidden;height:12%;bottom:0; padding-top:8px;background:#f3ffef}
 
 
 .navtile
@@ -84,7 +90,7 @@ bottom:0px;
   margin-left:-50px;
   height:90px;
   width:100px;
-  opacity:0.6;
+  opacity:0.5;
   font-size:26px;
   text-align:center;
   color:#111;
@@ -151,8 +157,7 @@ bottom:0px;
 
 .intestazione {position:absolute;width:100%}
 .produzione .tile .intestazione, .rete .tile .intestazione {top:40%;margin-top:-120px;}
-.consumo .tile .intestazione {bottom:40%;margin-bottom:200px;}
-.altro .tile .intestazione {bottom:40%;margin-bottom:200px;}
+.consumo .tile .intestazione,.altro .tile .intestazione {bottom:40%;margin-bottom:200px;}
 
 .fascia.green{color:#090}
 .fascia.red{color:red}
@@ -191,11 +196,13 @@ bottom:0px;
 
 .puntini
 {
-  margin-top:54px;
+  margin-top:58px;
   width:400px;
   overflow:hidden;
   animation: 1.4s ease-out 0s 1 sizeup;
 }
+
+.tile-name{margin-top:25px}
 
 .bg-yellow {background: radial-gradient(circle 130px at center,rgba(255,255,0,0.3),rgba(0,0,0,0));}
 .bg-red {background: radial-gradient(circle 130px at center,rgba(255,0,0,0.3),rgba(0,0,0,0));}
@@ -322,3 +329,84 @@ label {
 
 
 input[type=date]{height:50px; width:300px; font-size:34px}
+
+
+.euros {position:absolute; top:48%;right:34px;font-size:56px; color:#090}
+.km{position:absolute; top:50%;left:160px}
+.car{margin-left:2px; margin-top:4px;content:url(img/macchina.png)}
+.rifornitore{margin-left:24px;content:url(img/rifornitore.png)}
+
+@media (min-device-width: 768px)
+{
+
+  .euros {font-size:40px;top:20%}
+  .km{font-size:20px;margin-left:-80px}
+  .rifornitore{height:70%;margin-top:-1.6%}
+    .car{height:80%;margin-top:-1%}
+
+  #title {font-size:46px;margin-top:-28px;}
+  .navbar
+  {
+  height:11%;
+  bottom:0px;
+  }
+
+  .top-bar {top:0px;height:10%}
+
+  .bar-dati {height:7%}
+  .dati-top {top:10%;}
+  .dati-middle {top:55%;}
+
+  .title-dati {
+    font-size:32px;margin-top:-20px
+  }
+  #title-dati-top {padding-left:1%;}
+  #title-dati-middle {padding-right:1%}
+
+  .core
+    {
+      top:10%;
+      height:73%;
+      font-size:18px;
+    }
+  .bottom-bar {height:17%;padding-top:8px;font-size:20px}
+
+  @keyframes sizeup {
+    0% {
+      width:0;
+    }
+    100% {
+      width:65%;
+    }
+  }
+
+  .navcore
+  {
+    margin-top:-25px;
+    margin-left:-50px;
+    font-size:14px;
+  }
+
+  .linkimage
+  {
+    height:36px;
+    width:36px;
+    margin-left:32px;
+  }
+
+  .fascia {font-size:26px;padding:10px; margin-left:-76px}
+  .puntini
+  {
+    width:65%;
+    margin-top:14px
+  }
+
+  .content{height:89%}
+
+  .tile-icon{margin-left:-55px;height:110px}
+  .tile-name{margin-top:5px;margin-left:-74px !important;}
+
+  .produzione .tile .intestazione, .rete .tile .intestazione {top:40%;margin-top:-14.5%;}
+  .consumo .tile .intestazione,.altro .tile .intestazione {bottom:40%;margin-bottom:22%;}
+
+}

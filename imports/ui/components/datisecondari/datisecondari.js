@@ -7,18 +7,12 @@ import './datisecondari.html';
 
 Template.datisecondari.onCreated(function () {
 
-  Session.set("timeMode", "Stato Attuale");
-  Session.set("produzione", 0);
+  Session.set("timeMode", "Giornaliero");
   Session.set("rete", 0);
-  Session.set("consumo", 0);
   Session.set("batteria", 0);
 
 	Meteor.subscribe('linksDay.all',function(){
 		console.log("linksDay.all ready");
-        updateUi();
-	});
-  Meteor.subscribe('linksHour.all',function(){
-		console.log("linksHour.all ready");
         updateUi();
 	});
 });
@@ -29,13 +23,32 @@ Template.datisecondari.onRendered(function() {
 
 Template.datisecondari.helpers({
 
+  TitoloPeriodo() {return Session.get ("timeMode");},
+
+  ValRete() {return Session.get("rete")/1000;},
+  ColorRete()
+  {
+    var valore=Session.get("rete");
+    if(valore==0) return "grey";
+    else if(valore>0) return "red";
+    else return "green";
+  },
+
+  ValBatteria() {return Session.get("batteria")/1000;},
+  ColorBatteria() {
+    var valore=Session.get("batteria");
+    if(valore==0) return "grey";
+    else if(valore>0) return "green";
+    else return "red";
+  }
+
 });
 
 Template.datisecondari.events({
   'click #confirm'(event, instance) {
     submit();
   },
-  'click .bar-dati'(event, instance)
+  'click .top-bar'(event, instance)
   {
     display('window');
     display('overflow');
@@ -53,7 +66,7 @@ Template.datisecondari.events({
       radioElement.checked=false;
     })
     event.target.checked=true;
-    if (event.target.value=="ALTRO PERIODO")
+    if (event.target.value=="Altro Periodo..")
       new_timeMode=document.getElementById("datestart").value.substring(5,7)+ "/" + document.getElementById("datestart").value.substring(8) + " - " + document.getElementById("dateend").value.substring(5,7)+ "/" + document.getElementById("dateend").value.substring(8);
     else
       new_timeMode=event.target.value;
@@ -88,19 +101,17 @@ function updateUi(timeMode)
   console.log("checking in autorun..");
   console.log("CURRENT TIME: ");
   console.log(currenttime);
-  if (timeMode=="Stato Attuale")
+  if (timeMode=="Settimanale")
   {
     link=LinksHour.findOne({Ora: currenttime.getHours()});
     console.log(link);
   }
-  else if (timeMode=="Ultime 24h")
+  else if (timeMode=="Giornaliero")
   {
     link=LinksDay.findOne({Giorno: currenttime.getUTCDate()});
     console.log(link);
   }
 
 
-  Session.set("produzione", link.Produzione);
   Session.set("rete", link.Scambio);
-  Session.set("consumo", link.Scambio+link.Produzione);
 }

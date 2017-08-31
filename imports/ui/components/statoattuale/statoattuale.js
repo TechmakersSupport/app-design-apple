@@ -31,11 +31,6 @@ Template.statoattuale.helpers({
   TitoloPeriodo() {return Session.get ("timeMode");},
 
   ValConsumo() {return Session.get("consumo")/1000;},
-  ArrowConsumo(){
-    var valore=Session.get("consumo");
-    if(valore==0) return "";
-    else if(valore>0) return "uscita";
-  },
   ColorConsumo() {
     var valore=Session.get("consumo");
     if(valore==0) return "";
@@ -43,12 +38,6 @@ Template.statoattuale.helpers({
   },
 
   ValProduzione() {return Session.get("produzione")/1000;},
-  ArrowProduzione()
-  {
-    var valore=Session.get("produzione");
-    if(valore==0) return "";
-    else if(valore>0) return "entrata";
-  },
   ColorProduzione()
   {
     var valore=Session.get("produzione");
@@ -57,13 +46,6 @@ Template.statoattuale.helpers({
   },
 
   ValRete() {return Session.get("rete")/1000;},
-  ArrowRete()
-  {
-    var valore=Session.get("rete");
-    if(valore==0) return "";
-    else if(valore<0) return "entrata";
-    else return "uscita";
-  },
   ColorRete()
   {
     var valore=Session.get("rete");
@@ -73,12 +55,6 @@ Template.statoattuale.helpers({
   },
 
   ValBatteria() {return Session.get("batteria")/1000;},
-  ArrowBatteria(){
-    var valore=Session.get("batteria");
-    if(valore==0) return "grey";
-    else if(valore>0) return "entrata";
-    else return "uscita";
-  },
   ColorBatteria() {
     var valore=Session.get("batteria");
     if(valore==0) return "grey";
