@@ -8,10 +8,10 @@ Meteor.startup(() => {
   LinksDay.remove({});
   LinksHour.remove({});
 
-  LinksDay.insert([
+  var linksDayTest = [
           /* 1 */
           {
-              "_id" : ObjectId("59a3ccc086fdfebe23772c46"),
+              //"_id" : ObjectId("59a3ccc086fdfebe23772c46"),
               "Name" : "Stefano Casa",
               "Produzione" : 18919,
               "Scambio" : -10109,
@@ -21,7 +21,7 @@ Meteor.startup(() => {
 
           /* 2 */
           {
-              "_id" : ObjectId("599d4bcc9ea2ccbb5190137c"),
+              //"_id" : ObjectId("599d4bcc9ea2ccbb5190137c"),
               "Name" : "Stefano Casa",
               "Produzione" : 19560,
               "Scambio" : -12402,
@@ -31,7 +31,7 @@ Meteor.startup(() => {
 
           /* 3 */
           {
-              "_id" : ObjectId("599d4bcc9ea2ccbb5190137d"),
+              //"_id" : ObjectId("599d4bcc9ea2ccbb5190137d"),
               "Name" : "Stefano Casa",
               "Produzione" : 19409,
               "Scambio" : -6352,
@@ -41,7 +41,7 @@ Meteor.startup(() => {
 
           /* 4 */
           {
-              "_id" : ObjectId("599d4bcc9ea2ccbb5190137e"),
+              //"_id" : ObjectId("599d4bcc9ea2ccbb5190137e"),
               "Name" : "Stefano Casa",
               "Produzione" : 15515,
               "Scambio" : -7550,
@@ -51,7 +51,7 @@ Meteor.startup(() => {
 
           /* 5 */
           {
-              "_id" : ObjectId("599d4bcc9ea2ccbb5190137f"),
+              //"_id" : ObjectId("599d4bcc9ea2ccbb5190137f"),
               "Name" : "Stefano Casa",
               "Produzione" : 21567,
               "Scambio" : -14328,
@@ -61,7 +61,7 @@ Meteor.startup(() => {
 
           /* 6 */
           {
-              "_id" : ObjectId("599d4bcc9ea2ccbb51901380"),
+              //"_id" : ObjectId("599d4bcc9ea2ccbb51901380"),
               "Name" : "Stefano Casa",
               "Produzione" : 19576,
               "Scambio" : -7002,
@@ -71,7 +71,7 @@ Meteor.startup(() => {
 
           /* 7 */
           {
-              "_id" : ObjectId("599d4bcc9ea2ccbb51901381"),
+              //"_id" : ObjectId("599d4bcc9ea2ccbb51901381"),
               "Name" : "Stefano Casa",
               "Produzione" : 18864,
               "Scambio" : -10197,
@@ -81,7 +81,7 @@ Meteor.startup(() => {
 
           /* 8 */
           {
-              "_id" : ObjectId("599d4bcc9ea2ccbb51901382"),
+              //"_id" : ObjectId("599d4bcc9ea2ccbb51901382"),
               "Name" : "Stefano Casa",
               "Produzione" : 20541,
               "Scambio" : -11168,
@@ -91,19 +91,19 @@ Meteor.startup(() => {
 
           /* 9 */
           {
-              "_id" : ObjectId("599d80500d794136e18598dc"),
+              //"_id" : ObjectId("599d80500d794136e18598dc"),
               "Name" : "Stefano Casa",
               "Produzione" : 19052,
               "Scambio" : -13382,
               "Giorno" : 23
           }
-  ]);
+  ];
 
 
-  LinksHour.insert([
+var linksHourTest = [
           /* 1 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901363"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901363"),
               "Name" : "Stefano Casa",
               "Produzione" : 0,
               "Scambio" : 423,
@@ -112,7 +112,7 @@ Meteor.startup(() => {
 
           /* 2 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901364"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901364"),
               "Name" : "Stefano Casa",
               "Produzione" : 0,
               "Scambio" : 216,
@@ -121,7 +121,7 @@ Meteor.startup(() => {
 
           /* 3 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901365"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901365"),
               "Name" : "Stefano Casa",
               "Produzione" : 0,
               "Scambio" : 297,
@@ -130,7 +130,7 @@ Meteor.startup(() => {
 
           /* 4 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901366"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901366"),
               "Name" : "Stefano Casa",
               "Produzione" : 0,
               "Scambio" : 231,
@@ -139,7 +139,7 @@ Meteor.startup(() => {
 
           /* 5 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901367"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901367"),
               "Name" : "Stefano Casa",
               "Produzione" : 0,
               "Scambio" : 215,
@@ -148,7 +148,7 @@ Meteor.startup(() => {
 
           /* 6 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901368"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901368"),
               "Name" : "Stefano Casa",
               "Produzione" : 0,
               "Scambio" : 353,
@@ -157,7 +157,7 @@ Meteor.startup(() => {
 
           /* 7 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901369"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901369"),
               "Name" : "Stefano Casa",
               "Produzione" : 0,
               "Scambio" : 285,
@@ -166,7 +166,7 @@ Meteor.startup(() => {
 
           /* 8 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb5190136a"),
+              //"_id" : ObjectId("599d49569ea2ccbb5190136a"),
               "Name" : "Stefano Casa",
               "Produzione" : 536,
               "Scambio" : -316,
@@ -175,7 +175,7 @@ Meteor.startup(() => {
 
           /* 9 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb5190136b"),
+              //"_id" : ObjectId("599d49569ea2ccbb5190136b"),
               "Name" : "Stefano Casa",
               "Produzione" : 1601,
               "Scambio" : -1325,
@@ -184,7 +184,7 @@ Meteor.startup(() => {
 
           /* 10 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb5190136c"),
+              //"_id" : ObjectId("599d49569ea2ccbb5190136c"),
               "Name" : "Stefano Casa",
               "Produzione" : 2198,
               "Scambio" : -1913,
@@ -193,7 +193,7 @@ Meteor.startup(() => {
 
           /* 11 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb5190136d"),
+              //"_id" : ObjectId("599d49569ea2ccbb5190136d"),
               "Name" : "Stefano Casa",
               "Produzione" : 2787,
               "Scambio" : -2517,
@@ -202,7 +202,7 @@ Meteor.startup(() => {
 
           /* 12 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb5190136e"),
+              //"_id" : ObjectId("599d49569ea2ccbb5190136e"),
               "Name" : "Stefano Casa",
               "Produzione" : 2937,
               "Scambio" : -2637,
@@ -211,7 +211,7 @@ Meteor.startup(() => {
 
           /* 13 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb5190136f"),
+              //"_id" : ObjectId("599d49569ea2ccbb5190136f"),
               "Name" : "Stefano Casa",
               "Produzione" : 2884,
               "Scambio" : -2536,
@@ -220,7 +220,7 @@ Meteor.startup(() => {
 
           /* 14 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901370"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901370"),
               "Name" : "Stefano Casa",
               "Produzione" : 2381,
               "Scambio" : -1786,
@@ -229,7 +229,7 @@ Meteor.startup(() => {
 
           /* 15 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901371"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901371"),
               "Name" : "Stefano Casa",
               "Produzione" : 2419,
               "Scambio" : -1536,
@@ -238,7 +238,7 @@ Meteor.startup(() => {
 
           /* 16 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901372"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901372"),
               "Name" : "Stefano Casa",
               "Produzione" : 2059,
               "Scambio" : -1296,
@@ -247,7 +247,7 @@ Meteor.startup(() => {
 
           /* 17 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901373"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901373"),
               "Name" : "Stefano Casa",
               "Produzione" : 1138,
               "Scambio" : -879,
@@ -256,7 +256,7 @@ Meteor.startup(() => {
 
           /* 18 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901374"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901374"),
               "Name" : "Stefano Casa",
               "Produzione" : 570,
               "Scambio" : -264,
@@ -265,7 +265,7 @@ Meteor.startup(() => {
 
           /* 19 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901375"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901375"),
               "Name" : "Stefano Casa",
               "Produzione" : 150,
               "Scambio" : 141,
@@ -274,7 +274,7 @@ Meteor.startup(() => {
 
           /* 20 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901376"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901376"),
               "Name" : "Stefano Casa",
               "Produzione" : 0,
               "Scambio" : 1103,
@@ -283,7 +283,7 @@ Meteor.startup(() => {
 
           /* 21 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901377"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901377"),
               "Name" : "Stefano Casa",
               "Produzione" : 0,
               "Scambio" : 2150,
@@ -292,7 +292,7 @@ Meteor.startup(() => {
 
           /* 22 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901378"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901378"),
               "Name" : "Stefano Casa",
               "Produzione" : 0,
               "Scambio" : 540,
@@ -301,7 +301,7 @@ Meteor.startup(() => {
 
           /* 23 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb51901379"),
+              //"_id" : ObjectId("599d49569ea2ccbb51901379"),
               "Name" : "Stefano Casa",
               "Produzione" : 0,
               "Scambio" : 415,
@@ -310,12 +310,21 @@ Meteor.startup(() => {
 
           /* 24 */
           {
-              "_id" : ObjectId("599d49569ea2ccbb5190137a"),
+              //"_id" : ObjectId("599d49569ea2ccbb5190137a"),
               "Name" : "Stefano Casa",
               "Produzione" : 0,
               "Scambio" : 540,
               "Ora" : 23
           }
-  ])
+];
+
+_.each(linksDayTest, function(doc) {
+  LinksDay.insert(doc);
+})
+
+_.each(linksHourTest, function(doc) {
+  LinksHour.insert(doc);
+})
+
 
 });

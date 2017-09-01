@@ -1,22 +1,15 @@
 import { Template } from 'meteor/templating';
-import { LinksDay } from '/imports/api/links/links.js';
 import { LinksHour } from '/imports/api/links/links.js';
 
 
 import './statoattuale.html';
 
 Template.statoattuale.onCreated(function () {
-
-  Session.set("timeMode", "Stato Attuale");
   Session.set("produzione", 0);
   Session.set("rete", 0);
   Session.set("consumo", 0);
   Session.set("batteria", 0);
 
-	Meteor.subscribe('linksDay.all',function(){
-		console.log("linksDay.all ready");
-        updateUi();
-	});
   Meteor.subscribe('linksHour.all',function(){
 		console.log("linksHour.all ready");
         updateUi();
@@ -28,12 +21,10 @@ Template.statoattuale.onRendered(function() {
 
 Template.statoattuale.helpers({
 
-  TitoloPeriodo() {return Session.get ("timeMode");},
-
   ValConsumo() {return Session.get("consumo")/1000;},
   ColorConsumo() {
     var valore=Session.get("consumo");
-    if(valore==0) return "";
+    if(valore==0) return "grey";
     else if(valore>0) return "red";
   },
 
@@ -41,7 +32,7 @@ Template.statoattuale.helpers({
   ColorProduzione()
   {
     var valore=Session.get("produzione");
-    if(valore==0) return "";
+    if(valore==0) return "grey";
     else if(valore>0) return "green";
   },
 
@@ -84,22 +75,13 @@ function submit()
 
 function updateUi(timeMode)
 {
-  var timeMode=Session.get("timeMode");
   var link;
   var currenttime=new Date();
   console.log("checking in autorun..");
   console.log("CURRENT TIME: ");
   console.log(currenttime);
-  if (timeMode=="Stato Attuale")
-  {
-    link=LinksHour.findOne({Ora: currenttime.getHours()});
-    console.log(link);
-  }
-  else if (timeMode=="Ultime 24h")
-  {
-    link=LinksDay.findOne({Giorno: currenttime.getUTCDate()});
-    console.log(link);
-  }
+  link=LinksHour.findOne({Ora: currenttime.getHours()});
+  console.log(link);
 
 
   Session.set("produzione", link.Produzione);
