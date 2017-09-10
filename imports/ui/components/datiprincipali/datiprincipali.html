@@ -4,44 +4,61 @@
       <h2>PERIODO VISUALIZZATO</h2>
       <form style="text-align:left; margin-left:75px;margin-top:-10px">
         <label class="newradio">
-          <input type="radio" class="radio" value="Stato Attuale" checked>
-          <span class="custom tempo-reale"><span>Stato Attuale</span></span>
+          <input type="radio" class="radio" value="Ultime 4h">
+          <span class="custom"><span>Ultime 4h</span></span>
         </label>
         <br>
         <label class="newradio">
-          <input type="radio" class="radio" value="Ultime 24h">
-          <span class="custom 24-ore"><span>Giornaliero</span></span>
+          <input type="radio" class="radio" value="Giornata attuale" checked>
+          <span class="custom"><span>Giornata attuale</span></span>
         </label>
         <br>
         <label class="newradio">
-          <input type="radio" class="radio" value="Ultima settimana">
-          <span class="custom tempo-reale"><span>Settimanale</span></span>
+          <input type="radio" class="radio" value="Settimanale">
+          <span class="custom"><span>Settimanale</span></span>
         </label>
         <br>
         <label class="newradio">
-          <input type="radio" class="radio" value="Ultimo mese">
-          <span class="custom tempo-reale"><span>Mensile</span></span>
+          <input type="radio" class="radio" value="Mese attuale">
+          <span class="custom"><span>Mese attuale</span></span>
         </label>
         <br>
         <label class="newradio">
-          <input type="radio" class="radio" value="Altro periodo..">
-          <span class="custom tempo-reale"><span>Altro periodo..</span></span>
+          <input type="radio" class="radio" value="Anno attuale">
+          <span class="custom"><span>Anno attuale</span></span>
         </label>
-        <div style="padding-left:70px;margin-top:-5px;">
-        <input type="date" id="datestart" value="2017-04-01">
-        <input type="date" id="dateend" value="2017-05-10">
-        </div>
       </form>
     </div>
     <div id="overflow" class="hide"></div>
 
     <div id="section">
-
-    <div class="bar top-bar"><div class="v-center"><div id="title">{{TitoloPeriodo}}</div></div></div>
-    <div class="bar bar-dati dati-top"><div class="v-center"><div class="title-dati" id="title-dati-top">Produzione</div></div></div>
-    <div class="bar bar-dati dati-middle"><div class="v-center"><div class="title-dati" id="title-dati-middle">Consumo</div></div></div>
+    <div class="bar top-bar"><div class="v-center"><div id="title-dati">{{TitoloPeriodo}}</div></div></div>
+    <div class="bar bar-dati dati-top"><div class="v-center">
+      <div class="title-dati">Produzione
+          <div class="dati-totale totale-Produzione {{ColorProduzione}}">{{ProduzioneTotale}} kWh</div>
+      </div>
+    </div></div>
+    <div class="bar dati-produzione">
+      <div class="chart3d" id="chart3d-1"></div>
+      <div class="dati-desc">
+        <div class="list"><div class="desc-title">{{AutoconsumoT}}</div><div class="desc-value" style="color:blue">{{AutoconsumoV}} Wh</div></div>
+        <div class="list"><div class="desc-title">{{ProduzioneScambioT}}</div><div class="desc-value" style="color:green"> {{ProduzioneScambioV}} Wh</div></div>
+        <div class="list"><div class="desc-title">{{ProduzioneAccumuloT}}</div><div class="desc-value" style="color:grey">{{ProduzioneAccumuloV}} Wh</div></div>
+      </div>
+    </div>
+    <div class="bar bar-dati dati-middle"><div class="v-center">
+      <div class="title-dati">Consumo
+          <div class="dati-totale totale-consumo {{ColorConsumo}}">{{ConsumoTotale}} kWh</div>
+      </div>
+    </div></div>
+    <div class="bar dati-consumo">
+      <div class="chart3d" id="chart3d-2"></div>
+      <div class="dati-desc">
+        <div class="list"><div class="desc-title">{{AutoconsumoT}}</div><div class="desc-value" style="color:blue"> {{AutoconsumoV}} Wh</div></div>
+        <div class="list"><div class="desc-title">{{ConsumoScambioT}}</div><div class="desc-value" style="color:red"> {{ConsumoScambioV}} Wh</div></div>
+        <div class="list"><div class="desc-title">{{ConsumoAccumuloT}}</div><div class="desc-value" style="color:grey"> {{ConsumoAccumuloV}} Wh</div></div>
+      </div>
+    </div>
 
   </div>
-
-
 </template>

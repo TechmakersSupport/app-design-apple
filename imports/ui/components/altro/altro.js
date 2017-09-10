@@ -1,26 +1,16 @@
-import { Template } from 'meteor/templating';
-import { LinksDay } from '/imports/api/links/links.js';
-import { LinksHour } from '/imports/api/links/links.js';
+import {Meteor} from 'meteor/meteor';
+import {Template} from 'meteor/templating';
+import {Links} from '/imports/api/links/links.js';
+//import {Plants};
 
+//MODIFICA FARE I CALCOLI DELLA MACCHININA
 
 import './altro.html';
 
 Template.altro.onCreated(function () {
-
-  Session.set("timeMode", "Stato Attuale");
-  Session.set("produzione", 0);
-  Session.set("rete", 0);
-  Session.set("consumo", 0);
-  Session.set("batteria", 0);
-
-	Meteor.subscribe('linksDay.all',function(){
-		console.log("linksDay.all ready");
-        updateUi();
-	});
-  Meteor.subscribe('linksHour.all',function(){
-		console.log("linksHour.all ready");
-        updateUi();
-	});
+  Meteor.subscribe('linksNow.all',Session.get("s"),function(){
+    console.log("linksNow.all ready");
+  });
 });
 
 Template.altro.onRendered(function() {
@@ -28,96 +18,154 @@ Template.altro.onRendered(function() {
 });
 
 Template.altro.helpers({
-
-  TitoloPeriodo() {return Session.get ("timeMode");},
-
-  ValConsumo() {return Session.get("consumo")/1000;},
-  ArrowConsumo(){
-    var valore=Session.get("consumo");
-    if(valore==0) return "";
-    else if(valore>0) return "uscita";
-  },
-  ColorConsumo() {
-    var valore=Session.get("consumo");
-    if(valore==0) return "";
-    else if(valore>0) return "red";
+  Useraction() {
+    if (Meteor.user())
+      return "Logout";
+    else {
+      return "Login";
+    }
   },
 
-  ValProduzione() {return Session.get("produzione")/1000;},
-  ArrowProduzione()
+  Username() {
+    var user = Meteor.user();
+    if (user)
+      {
+        var email = user && user.emails && user.emails[0].address;
+        return email;
+      }
+    else return "Demo";
+  },
+
+  impianti()
   {
-    var valore=Session.get("produzione");
-    if(valore==0) return "";
-    else if(valore>0) return "entrata";
-  },
-  ColorProduzione()
-  {
-    var valore=Session.get("produzione");
-    if(valore==0) return "";
-    else if(valore>0) return "green";
+    updateplants();
+    console.log(Session.get("s"));
+    return getplants();
   },
 
-  ValRete() {return Session.get("rete")/1000;},
-  ArrowRete()
+  hidetodemo()
   {
-    var valore=Session.get("rete");
-    if(valore==0) return "";
-    else if(valore<0) return "entrata";
-    else return "uscita";
-  },
-  ColorRete()
-  {
-    var valore=Session.get("rete");
-    if(valore==0) return "grey";
-    else if(valore>0) return "red";
-    else return "green";
-  },
-
-  ValBatteria() {return Session.get("batteria")/1000;},
-  ArrowBatteria(){
-    var valore=Session.get("batteria");
-    if(valore==0) return "grey";
-    else if(valore>0) return "entrata";
-    else return "uscita";
-  },
-  ColorBatteria() {
-    var valore=Session.get("batteria");
-    if(valore==0) return "grey";
-    else if(valore>0) return "green";
-    else return "red";
+    if (!Meteor.user())
+      return "hidetodemo";
+    else {
+      return "";
+    }
   }
+
 });
 
 Template.altro.events({
-  'click #confirm'(event, instance) {
-    submit();
-  },
-  'click .top-bar'(event, instance)
-  {
-    display('window');
-    display('overflow');
-  },
+  'click .Logout'(event){
+     event.preventDefault();
+  		//esegue il logout forzando il reload in base dir
+          Meteor.logout(function() {
+              updateplants();
+          });
+      },
+  'click .Login'(event, instance)
+    {
+      event.preventDefault();
+      display('window');
+      display('overflow');
+      document.getElementById("fallbacklabel").className="hide";
+    },
+    'click .Conferma'(event, instance)
+      {
+         event.preventDefault();
+         var email=document.getElementById("username").value;
+         var password=document.getElementById("password").value;
+          Meteor.loginWithPassword(email, password, function(error) {
+            if (error) {
+              console.log(error);
+              document.getElementById("fallbacklabel").innerHTML="Errore nell'autenticazione";
+              document.getElementById("fallbacklabel").className="show";
+            }
+            else {
+              hide('window');
+              hide('overflow');
+            }
+          });
+      },
+
+      'click .Register'(event, instance)
+        {
+          event.preventDefault();
+          var email=document.getElementById("username").value;
+          var password=document.getElementById("password").value;
+          var newuser={
+          email: email,
+          password: password,
+          profile: {
+                impianti: []
+            }
+          };
+          console.log(newuser);
+          Accounts.createUser(
+              newuser,
+              function(error){
+                if (error) {
+                  console.log(error);
+                  document.getElementById("fallbacklabel").innerHTML="Errore nella registrazione";
+                  document.getElementById("fallbacklabel").className="show";
+                }
+                else {
+                  document.getElementById("fallbacklabel").innerHTML="Registrazione avvenuta con successo";
+                  document.getElementById("fallbacklabel").className="show";
+                  hide('window');
+                  hide('overflow');
+                }
+              }
+          );
+        },
   'click #overflow'(event, instance)
+    {
+       event.preventDefault();
+      hide('window');
+      hide('overflow');
+    },
+
+  'click .plant'(event, instance)
   {
-    hide('window');
-    hide('overflow');
-  },
-  'click .radio'(event, instance)
-  {
-    var new_timeMode;
-    var radios=document.getElementsByClassName("radio");
-    [...radios].forEach (function(radioElement){
-      radioElement.checked=false;
-    })
-    event.target.checked=true;
-    if (event.target.value=="ALTRO PERIODO")
-      new_timeMode=document.getElementById("datestart").value.substring(5,7)+ "/" + document.getElementById("datestart").value.substring(8) + " - " + document.getElementById("dateend").value.substring(5,7)+ "/" + document.getElementById("dateend").value.substring(8);
+    var newid = this.id;
+    if(Meteor.user())
+    {
+      var impianti =  getplants();
+      impianti.forEach(function(impianto){impianto.selected=(newid==impianto.id);});
+      Meteor.users.update(Meteor.userId(), {$set: {"profile.plants": impianti}}, { upsert: true });
+    }
     else
-      new_timeMode=event.target.value;
-    Session.set("timeMode", new_timeMode);
-    updateUi();
+    {
+      Session.set("demoId", newid);
+    }
+    updateplants();
+    FlowRouter.go('/');
+  },
+
+  'click .plus-impianti'(event, instance)
+  {
+    var newid=document.getElementById("id-nuovi-impianti").value;
+    validid = (newid!="") && Links.now.findOne({s: newid});
+    if(Meteor.user() && validid)
+    {
+      var impianti=Meteor.user().profile.plants;
+      impianti.forEach(function(impianto){impianto.selected=false;});
+      impianti.push({id:newid, selected:true});
+      console.log(impianti);
+      Meteor.users.update(Meteor.userId(), {$set: {"profile.plants": impianti}}, { upsert: true });
+      updateplants();
+      FlowRouter.go('/');
+    }
+    else
+    {
+      event.target.id="";
+      void   event.target.offsetWidth;
+      event.target.id="plusrotating";
+      console.log("adding failed");
+    }
   }
 });
+
+
 
 function display(id) {
   document.getElementById("section").className="blur";
@@ -137,27 +185,42 @@ function submit()
   hide('overflow');
 }
 
-function updateUi(timeMode)
+function getplants()
 {
-  var timeMode=Session.get("timeMode");
-  var link;
-  var currenttime=new Date();
-  console.log("checking in autorun..");
-  console.log("CURRENT TIME: ");
-  console.log(currenttime);
-  if (timeMode=="Stato Attuale")
+  var user = Meteor.user();
+  var newplants;
+  if (user)
   {
-    link=LinksHour.findOne({Ora: currenttime.getHours()});
-    console.log(link);
+    newplants=user.profile.plants;
   }
-  else if (timeMode=="Ultime 24h")
+  else
   {
-    link=LinksDay.findOne({Giorno: currenttime.getUTCDate()});
-    console.log(link);
+    newplants=getdemoplants();
   }
+  return newplants;
+}
 
+function updateplants()
+{
+  var selectedId;
+  var user = Meteor.user();
+  if (user)
+  {
+    getplants().forEach(function(plant){if (plant.selected) selectedId=plant.id});
+  }
+  else
+  {
+    if (!Session.get("demoId"))
+      Session.set("demoId", getplants()[0].id);
+    selectedId=Session.get("demoId");
+  }
+  Session.set("s", selectedId);
+}
 
-  Session.set("produzione", link.Produzione);
-  Session.set("rete", link.Scambio);
-  Session.set("consumo", link.Scambio+link.Produzione);
+function getdemoplants()
+{
+  var impianti = [];
+  var links =  Links.now.find({s:"AICARDI_001"});
+  impianti.push({id:"AICARDI_001"});
+  return impianti;
 }

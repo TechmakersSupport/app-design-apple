@@ -3,6 +3,11 @@
     src: url(NotSanFrancisco.ttf);
 }
 
+@font-face {
+    font-family: "NotSanFrancisco-Light";
+    src: url(NotSanFranciscoLight.ttf);
+}
+
 
 body
 {
@@ -10,14 +15,63 @@ body
   background:white;
   font-family:'NotSanFrancisco';
   text-align:center;
-  font-weight:bold;
-  font-size:42px;
+  font-size:40px;
 }
 div {margin:0px;}
-input{margin-top:10px;}
-div.inline { float:left; }
+input{margin-top:14px;}
+.userlabel{margin-top:8px}
+div.inline {float:left}
+
+div:before{background-size:contain; background-repeat:no-repeat}
+
+
+.onlydesk{display:none}
+
+path.slice{
+	stroke-width:2px;
+}
+polyline{
+	opacity: .3;
+	stroke: black;
+	stroke-width: 2px;
+	fill: none;
+}
+
+
+svg{
+  height:100%;
+  width:100%;
+}
+
+svg text.percent{
+	fill:white;
+	text-anchor:middle;
+}
+
+.chart3d{
+  position:absolute;
+  width:60%;
+  height:85%;
+}
+
+.dati-desc {position:absolute;height:100%;width:37.5%;margin-top:-16px}
+
+.dati-produzione .chart3d, .dati-rete .chart3d {right:0}
+.dati-consumo .chart3d, .dati-accumulo .chart3d {left:0}
+
+.dati-produzione .dati-desc, .dati-rete .dati-desc {right:60%}
+.dati-consumo .dati-desc, .dati-accumulo .dati-desc  {left:60%}
+
+.list{font-size:46px; color:#333; margin-bottom:40px; margin-top:20px; text-align:center;}
+.desc-title{color:black;display:inline}
+
+.dati-consumo .list .point {background:red;}
+.dati-produzione .list .point {background:green}
+.dati-rete .list .point {background:blue}
+.dati-accumulo .list .point {background:grey}
 
 .hide{visibility:hidden}
+.hidetodemo{transform:scaleY(0.01);display:none; overflow:hidden;}
 
 .v-center{position:absolute; top:50%; width:100%}
 .o-center{position:absolute; left:50%; height:100%}
@@ -36,6 +90,23 @@ div.inline { float:left; }
   background:white;
 }
 
+.dati-totale
+{
+  font-size:68px;
+  display:inline;
+  padding-left:24px;
+  padding-right:24px;
+  position:absolute;
+  right:0px;
+  top:0px;
+  height:100%;
+  padding-top:5px;
+  border-bottom:2px solid #aaa;
+  border-left:2px solid #aaa;
+  border-right:2px solid #aaa;
+  border-bottom-left-radius:20px;
+}
+
 .navbar
 {
 height:7%;
@@ -47,20 +118,113 @@ bottom:0px;
 .top-bar {top:0px;height:12%}
 
 .bar-dati {height:9%}
-.dati-top {top:12%;}
-.dati-middle {top:57%;}
+.dati-top {top:11%;}
+.dati-middle {top:55.5%;}
+
+.dati-produzione, .dati-rete{top:20%;height:33%;margin-top:2.5%}
+.dati-consumo, .dati-accumulo{top:65%;height:35.5%;margin-top:2.5%}
+
+.bar-gestione {top:0px}
+
+.title-altro{
+  position:absolute; bottom:0;right:0; width:97.5%;padding-bottom:16px;font-size:90px;color:black;text-align:left; border-bottom: solid 2px #aaa; padding-left:4px
+}
 
 
-#title {font-size:120px;margin-top:-71px;padding:0; background:white; color:black}
+.bg-altro{height:91%; position:absolute; top:9%; background:#f4f4f4; width:100%;}
+
+.tile-altro{background:white; border-radius:10px; margin:2.5%; padding:30px 40px; font-size:60px; text-align:left;font-family:"NotSanFrancisco-Light";}
+
+.username-altro{color:#555; display: inline-block;font-size:52px}
+.subtitle-altro{color:black}
+
+.titleimpianti-altro{margin-top:80px; padding-bottom:20px;border-bottom:solid 1px grey}
+
+.tile-impianti{margin:0 0; width:100%;padding: 20px 30px;font-size: 54px; color:grey;border-bottom:solid 1px grey}
+
+.tile-impianti.true{background:#edffe5;transition:all 0.1s ease-in; color:black}
+
+.eye-impianti{float:right; display:none;}
+
+.tile-impianti.true .eye-impianti{display:block;}
+
+@keyframes rotateplus {
+  0% {
+    color:green;
+    transform: rotate(0deg);
+  }
+  15% {
+    color:red;
+  }
+  30% {
+    transform: rotate(135deg);
+  }
+  70% {
+    transform: rotate(135deg);
+  }
+  85% {
+    color:red;
+  }
+  100% {
+    color:green;
+    transform: rotate(0deg);
+  }
+}
+
+.plus-impianti{margin-top:-16px; color:green;font-size:70px;float:right;padding-right:5px;}
+#plusrotating{animation: 0.75s linear 0s 1 rotateplus; animation-play-state: running; transform-origin:50% 60%}
+#id-nuovi-impianti{width:100%;border:none;background:transparent;font-size:50px;margin-top:0px}
+
+
+.button-altro {
+  float:right;
+  border-radius:20px;
+  font-size:50px;
+  padding:10px 20px;
+  border: solid 2px lightgrey;
+  width:220px;
+  color:#222;
+}
+
+.button-window{
+  border-radius:20px;
+  font-size:50px;
+  padding:10px 20px;
+  border: solid 2px lightgrey;
+  width:360px;
+  color:#222;
+  margin-top:0px;
+  position:absolute;
+  bottom:180px;
+  left:50%;
+  margin-left: -180px;
+}
+
+.button-altro:active {border-color:grey}
+
+.Login {background:#ccf2f2}
+.Conferma {background:#ccf2f2}
+.Logout {background:#eee}
+.Register {background:#fff; bottom:70px}
+.Demo {font-style:italic}
+
+
+.userlabel{display:inline-block;float:left; font-size:56px}
+.userbox{float:right;font-size:48px; width:340px; overflow:hidden;
+    text-overflow:clip;
+  }
+#fallbacklabel{text-align:center; font-size:40px}
+
+#title {font-size:120px;margin-top:-71px;padding:0; background:white; color:black;}
+#title-dati{position:relative;width:100%;font-size:100px;margin-top:-60px;padding:0; background:white; color:black;text-align:left !important; padding-left:2.5%;}
+#title-dati::after{font-size:80%;position:absolute;content:"📅";right:2.5%;top:10%}
 
 .title-dati {
+  position:relative;
   font-size:84px;margin-top:-55px;
   color:grey;
-  border-bottom:solid 1px;
-  border-color:#777
-}
-#title-dati-top {text-align:left;padding-left:3%;}
-#title-dati-middle {text-align:right;padding-right:3%;}
+  text-align:left;margin-left:2.5%; margin-right:2.5%; width:95%;border-top:solid 2px;
+  border-color:#aaa}
 
 .core
   {
@@ -102,6 +266,8 @@ bottom:0px;
   margin-left:18px;
 }
 
+
+
 #suggerimentiLink .linkimage
 {
   content: url(img/suggerimenti.png);
@@ -125,6 +291,31 @@ bottom:0px;
 #altroLink .linkimage
 {
   content: url(img/opzioni.png);
+}
+
+#suggerimentiLink .linkimage:before
+{
+  content:"";background-image: url(img/suggerimenti.png);display:block;height:100%;width:100%;
+}
+
+#attualeLink .linkimage:before
+{
+  content:"";background-image: url(img/attuale.png);display:block;height:100%;width:100%;
+}
+
+#principaliLink .linkimage:before
+{
+  content:"";background-image: url(img/principale.png);display:block;height:100%;width:100%;
+}
+
+#secondariLink .linkimage:before
+{
+  content:"";background-image: url(img/secondari.png);display:block;height:100%;width:100%;
+}
+
+#altroLink .linkimage:before
+{
+  content:"";background-image: url(img/opzioni.png);display:block;height:100%;width:100%;
 }
 
 
@@ -158,8 +349,8 @@ bottom:0px;
 .produzione .tile .intestazione, .rete .tile .intestazione {top:40%;margin-top:-120px;}
 .consumo .tile .intestazione,.altro .tile .intestazione {bottom:40%;margin-bottom:200px;}
 
-.fascia.green{color:#090}
-.fascia.red{color:red}
+.green{color:#090}
+.red{color:red}
 
 .tile-icon{display:block;margin-left:-110px}
 
@@ -177,6 +368,33 @@ bottom:0px;
 .rete .tile .intestazione .tile-icon.grey{content:url(img/rete-grey.png)}
 .consumo .tile .intestazione .tile-icon.grey{content:url(img/consumo-grey.png)}
 .altro .tile .intestazione .tile-icon.grey{content:url(img/options.png)}
+
+.produzione .tile .intestazione .tile-icon.green:before{content:"";background-image: url(img/produzione-green.png);
+                                                        display:block;height:100%;width:100%;}
+.rete .tile .intestazione .tile-icon.green:before{content:"";background-image: url(img/rete-green.png);
+                                                        display:block;height:100%;width:100%;}
+.consumo .tile .intestazione .tile-icon.green:before{content:"";background-image: url(img/consumo-green.png);
+                                                        display:block;height:100%;width:100%;}
+.altro .tile .intestazione .tile-icon.green:before{content:"";background-image: url(img/options.png);
+                                                        display:block;height:100%;width:100%;}
+
+.produzione .tile .intestazione .tile-icon.red:before{content:"";background-image: url(img/produzione-red.png);
+                                                        display:block;height:100%;width:100%;}
+.rete .tile .intestazione .tile-icon.red:before{content:"";background-image: url(img/rete-red.png);
+                                                        display:block;height:100%;width:100%;}
+.consumo .tile .intestazione .tile-icon.red:before{content:"";background-image: url(img/consumo-red.png);
+                                                        display:block;height:100%;width:100%;}
+.altro .tile .intestazione .tile-icon.red:before{content:"";background-image: url(img/options.png);
+                                                        display:block;height:100%;width:100%;}
+
+.produzione .tile .intestazione .tile-icon.grey:before{content:"";background-image: url(img/produzione-grey.png);
+                                                        display:block;height:100%;width:100%;}
+.rete .tile .intestazione .tile-icon.grey:before{content:"";background-image: url(img/rete-grey.png);
+                                                        display:block;height:100%;width:100%;}
+.consumo .tile .intestazione .tile-icon.grey:before{content:"";background-image: url(img/consumo-grey.png);
+                                                        display:block;height:100%;width:100%;}
+.altro .tile .intestazione .tile-icon.grey:before{content:"";background-image: url(img/options.png);
+                                                        display:block;height:100%;width:100%;}
 
 .fascia {width:100%;font-size:48px;padding:10px; margin-left:-122px}
 
@@ -214,7 +432,7 @@ bottom:0px;
   width:100%;
 }
 
-
+input {overflow:hidden}
 #overflow
 {
   width:100%;
@@ -223,27 +441,35 @@ bottom:0px;
   z-index:12;
 }
 
+.more-radius{border-radius:20px; border: solid 1px grey}
+
 #window
 {
   position:absolute; top:50%; left:50%;
   border-radius:18px;
-  background:#ccc; color:black;
-  border:solid 0.5px;
-  border-color:black;
-  width:836px;height:700px;
-  margin-top:-350px; margin-left:-418px;
+  background:rgba(220,220,220,0.8); color:black;
+  border:solid 2px;
+  border-color:grey;
+  width:836px;height:600px;
+  margin-top:-300px; margin-left:-418px;
   z-index:15;
+  overflow:hidden;
 }
 
-.blur {filter: blur(7px);}
+.blur {filter: blur(8px);}
 
 .overflow-show
 {
   visibility:visible;
   transition: all 0.4s ease-in;
-  background:rgba(15,15,15,0.1);
+  background:rgba(50,50,50,0.07);
 }
 
+.content-info
+{
+  text-align:justify;
+  font-size:48px;
+}
 .overflow-hide
 {
   visibility:hidden;
@@ -332,18 +558,26 @@ input[type=date]{height:50px; width:300px; font-size:34px}
 
 .euros {position:absolute; top:48%;right:34px;font-size:56px; color:#090}
 .km{position:absolute; top:50%;left:160px}
-.car{margin-left:2px; margin-top:4px;content:url(img/macchina.png)}
-.rifornitore{margin-left:24px;content:url(img/rifornitore.png)}
+.car{margin-left:2px; margin-top:4px;content:url(img/macchina.png);height:140px;width:140px}
+.rifornitore{margin-left:24px;content:url(img/rifornitore.png);height:130px;width:130px}
+
+.car:before{content:"";background-image: url(img/macchina.png);display:block;height:100%;width:100%}
+.rifornitore:before{content:"";background-image: url(img/rifornitore.png);display:block;height:100%;width:100%}
+
 
 @media (min-device-width: 768px)
 {
 
   .euros {font-size:40px;top:20%}
   .km{font-size:20px;margin-left:-70px;margin-top:-0.3%}
-  .rifornitore{height:70%;margin-top:-1.6%}
-    .car{height:80%;margin-top:-1%}
+  .rifornitore{height:70%;width:68px;margin-top:-1.6%}
+  .car{height:80%;width:70px;margin-top:-1%}
+
 
   #title {font-size:46px;margin-top:-28px;}
+
+  #title-dati {font-size:46px;margin-top:-28px;}
+
   .navbar
   {
   height:11%;
@@ -359,8 +593,9 @@ input[type=date]{height:50px; width:300px; font-size:34px}
   .title-dati {
     font-size:32px;margin-top:-20px
   }
-  #title-dati-top {padding-left:1%;}
-  #title-dati-middle {padding-right:1%}
+  #title-dati-top {margin-left:1.5%; margin-right:1.5%; width:97%;}
+  #title-dati-middle {margin-left:1.5%; margin-right:1.5%; width:97%;}
+  .dati-content {margin-left:1.5%; margin-right:1.5%; width:97%;}
 
   .core
     {
@@ -393,6 +628,7 @@ input[type=date]{height:50px; width:300px; font-size:34px}
     margin-left:32px;
   }
 
+
   .fascia {font-size:26px;padding:10px; margin-left:-76px}
   .puntini
   {
@@ -407,4 +643,84 @@ input[type=date]{height:50px; width:300px; font-size:34px}
 
   .produzione .tile .intestazione, .rete .tile .intestazione, .consumo .tile .intestazione, .altro .tile .intestazione {top:50%;margin-top:-84px;margin-bottom:0px}
 
+
+  .window-show
+  {
+    transform: scale(0.5);
+  }
+
+  .window-hide
+  {
+    transform: scale(0.45);
+  }
+
+  body
+  {
+    font-size:18px;
+  }
+
+  .chart3d{
+  height:100%;
+  width:35%;
+  margin-top:10px;}
+
+  .dati-desc {width:63.5%; margin-top:-16px}
+  .dati-consumo .dati-desc, .dati-accumulo .dati-desc {left:35%}
+  .dati-produzione .dati-desc, .dati-rete .dati-desc {right:35%}
+  .dati-consumo .chart3d, .dati-accumulo .chart3d {margin-left:1.5%}
+  .dati-produzione .chart3d, .dati-rete .chart3d {margin-right:1.5%}
+  .desc-value{display:inline}
+
+  .list{font-size:30px; color:#333; margin-bottom:24px; margin-top:10px; text-align:center;}
+  .desc-value{margin-left:30px}
+
+  svg {margin-top:-40px}
+  .dati-produzione, .dati-rete{top:20%;height:34.5%;margin-top:1%; margin-bottom:0}
+  .dati-consumo, .dati-accumulo{top:65%;height:35.5%;margin-top:1%; margin-bottom:0}
+  .dati-totale
+  {
+    font-size:28px;
+    padding-top:0
+  }
+  h2 {font-size:50px}
+  .title-altro{
+    width:98.5%;padding-bottom:2px;font-size:32px;border-bottom: solid 1px #aaa
+  }
+
+  .bar-gestione {height:8%}
+  .bg-altro{height:92%; position:absolute; top:8%; background:#f4f4f4; width:100%;}
+
+  .tile-altro{border-radius:10px; margin:40px 40px; padding:25px 30px; font-size:26px;}
+
+  .titleimpianti-altro{margin-top:40px; padding-bottom:10px;border-bottom:solid 1px lightgrey}
+
+  .tile-impianti{padding: 10px 15px; font-size: 20px; color:black;border-bottom:solid 1px lightgrey;}
+
+  .tile-impianti.true{ padding: 16px 15px;}
+
+
+  .plus-impianti{font-size:32px;margin-top:-10px; padding-right:0px}
+  #id-nuovi-impianti{font-size:19px}
+
+  .button-altro {
+    float:right;
+    border-radius:20px;
+    font-size:23px;
+    padding:10px 20px;
+    border: solid 1px lightgrey;
+    width:160px;
+    margin-top:-8px
+  }
+
+  .button-window{
+    transform:scale(2);
+    margin-left:-90px;
+  }
+
+  .username-altro{font-size:24px}
+  #fallbacklabel{clear:both;padding-top:18px;display:block;}
+  .content-info
+  {
+    font-size:24px;
+  }
 }
