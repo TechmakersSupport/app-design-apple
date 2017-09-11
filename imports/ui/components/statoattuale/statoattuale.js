@@ -10,10 +10,20 @@ Template.statoattuale.onCreated(function () {
   Session.set("consumo", 0);
   Session.set("batteria", 0);
 
-  Meteor.subscribe('linksNow.all',Session.get("s"),function(){
-    console.log("linksNow.all ready");
-            Tracker.autorun(updateUi);
-  });
+  Meteor.subscribe('linksHour.all',Session.get("s"),function(){
+		console.log("linksHour.all ready");
+    Meteor.subscribe('linksDay.all',Session.get("s"),function(){
+      console.log("linksDay.all ready");
+      Meteor.subscribe('linksMonth.all',Session.get("s"),function(){
+        console.log("linksMonth.all ready");
+        Meteor.subscribe('linksNow.all',Session.get("s"),function(){
+          console.log("linksNow.all ready");
+            });
+      });
+    });
+	});
+
+  Tracker.autorun(updateUi);
 });
 
 Template.statoattuale.onRendered(function() {
@@ -22,20 +32,31 @@ Template.statoattuale.onRendered(function() {
 Template.statoattuale.helpers({
 
   km(){
+    var ret="?",val;
     link=Links.day.findOne({s:Session.get("s")},{sort:{ts:-1},skip:1});
-    var ret=parseInt((link.v.ENERGIASCAMBIO[3]*6)/1000);
+    if(link!=undefined)
+    {
+    val=parseInt(Math.abs((link.v.ENERGIASCAMBIO[3]*6)/1000));
+    if(val!=0) ret=val;
+  }
     return ret;
   },
 
   money(){
-    link=Links.day.findOne({s:Session.get("s")},{sort:{ts:-1},skip:1});
-      var ret=parseInt((link.v.ENERGIASCAMBIO[3]*6)*1.5/1000);
-      return ret;},
+      var ret="?",val;
+      link=Links.day.findOne({s:Session.get("s")},{sort:{ts:-1},skip:1});
+      if(link!=undefined)
+      {
+      val=parseInt(Math.abs((link.v.ENERGIASCAMBIO[3]*6)*1.55/15000));
+      if(val!=0) ret=val+",00";
+    }
+      return ret;
+    },
 
   ValConsumo() {return (Session.get("consumo") || 0);},
   ColorConsumo() {
     var valore=Session.get("consumo");
-    if(valore==0 || !valore) return "grey";
+    if(valore===0 || !valore) return "grey";
     else if(valore>0) return "red";
   },
 
@@ -43,7 +64,7 @@ Template.statoattuale.helpers({
   ColorProduzione()
   {
     var valore=Session.get("produzione");
-    if(valore==0 || !valore) return "grey";
+    if(valore===0 || !valore) return "grey";
     else if(valore>0) return "green";
   },
 
@@ -51,7 +72,7 @@ Template.statoattuale.helpers({
   ColorRete()
   {
     var valore=Session.get("rete");
-    if(valore==0 || !valore) return "grey";
+    if(valore===0 || !valore) return "grey";
     else if(valore>0) return "red";
     else return "green";
   },
@@ -59,7 +80,7 @@ Template.statoattuale.helpers({
   ValBatteria() {return (Session.get("batteria") || 0);},
   ColorBatteria() {
     var valore=Session.get("batteria");
-    if(valore==0 || !valore) return "grey";
+    if(valore===0 || !valore) return "grey";
     else if(valore>0) return "green";
     else return "red";
   }
@@ -95,10 +116,12 @@ function updateUi(timeMode)
   link=Links.now.findOne({s:Session.get("s")},{sort:{ts:-1}});
   console.log(link);
 
-
+  if(link!=undefined)
+  {
   Session.set("produzione", link.v.ENERGIAPRODOTTA[3]);
   Session.set("rete", link.v.ENERGIASCAMBIO[3]);
   Session.set("consumo", link.v.ENERGIAPRODOTTA[3]+link.v.ENERGIASCAMBIO[3]);
+  }
 }
 
 
@@ -106,9 +129,13 @@ function getplants()
 {
   var user = Meteor.user();
   var newplants;
-  if (user)
+  if (user && Meteor.user().profile)
   {
-    newplants=user.profile.plants;
+    if (Meteor.user().profile.plants)
+      newplants=user.profile.plants;
+    else {
+      newplants=[];
+    }
   }
   else
   {

@@ -8,8 +8,8 @@ import {Links} from '/imports/api/links/links.js';
 import './altro.html';
 
 Template.altro.onCreated(function () {
-  Meteor.subscribe('linksNow.all',Session.get("s"),function(){
-    console.log("linksNow.all ready");
+  Meteor.subscribe('linksNow.allplants',function(){
+    console.log("linksNow.allplants ready");
   });
 });
 
@@ -130,7 +130,7 @@ Template.altro.events({
     if(Meteor.user())
     {
       var impianti =  getplants();
-      impianti.forEach(function(impianto){impianto.selected=(newid==impianto.id);});
+      impianti.forEach(function(impianto){impianto.selected=(newid===impianto.id);});
       Meteor.users.update(Meteor.userId(), {$set: {"profile.plants": impianti}}, { upsert: true });
     }
     else
@@ -144,21 +144,31 @@ Template.altro.events({
   'click .plus-impianti'(event, instance)
   {
     var newid=document.getElementById("id-nuovi-impianti").value;
-    validid = (newid!="") && Links.now.findOne({s: newid});
-    if(Meteor.user() && validid)
+    console.log(newid);
+    var isidreal=Links.now.find({s: newid}).fetch().length>0;
+    console.log(isidreal)
+    validid = ((newid!="") && isidreal);
+    if(validid)
+      console.log("validid");
+    console.log(Meteor.user());
+    if(Meteor.user() && Meteor.user().profile && validid)
     {
-      var impianti=Meteor.user().profile.plants;
+      var impianti;
+      if (Meteor.user().profile.plants)
+         impianti=Meteor.user().profile.plants;
+      else impianti=[];
       impianti.forEach(function(impianto){impianto.selected=false;});
       impianti.push({id:newid, selected:true});
+      console.log("listaimpianti:");
       console.log(impianti);
-      Meteor.users.update(Meteor.userId(), {$set: {"profile.plants": impianti}}, { upsert: true });
+      Meteor.call("updateuserplants",Meteor.userId(), impianti)
       updateplants();
       FlowRouter.go('/');
     }
     else
     {
       event.target.id="";
-      void   event.target.offsetWidth;
+      void event.target.offsetWidth;
       event.target.id="plusrotating";
       console.log("adding failed");
     }
@@ -189,9 +199,13 @@ function getplants()
 {
   var user = Meteor.user();
   var newplants;
-  if (user)
+  if (user && Meteor.user().profile)
   {
-    newplants=user.profile.plants;
+    if (Meteor.user().profile.plants)
+      newplants=user.profile.plants;
+    else {
+      newplants=[];
+    }
   }
   else
   {

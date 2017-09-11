@@ -10,9 +10,11 @@ var millis_in_hour =  60*60*1000;
 var millis_in_day = 24*60*60*1000;
 var millis_in_month = 30*60*60*1000;
 
+Session.set("s","");
+
 Template.datiprincipali.onCreated(function () {
 
-  Session.set("timeMode", "Giornata attuale");
+  Session.set("timeMode", "Ultime 4h");
   Session.set("Produzione.totale", 0);
   Session.set("Consumo.totale", 0);
 
@@ -29,28 +31,30 @@ Template.datiprincipali.onCreated(function () {
                                  {name:"scambio",label:"Acquistata", color:"red",value:0, absvalue:0}
                                ]
   );
-
-	Meteor.subscribe('linksHour.all',Session.get("s"),function(){
-		console.log("linksHour.all ready");
-    Meteor.subscribe('linksDay.all',Session.get("s"),function(){
-      console.log("linksDay.all ready");
-      Meteor.subscribe('linksMonth.all',Session.get("s"),function(){
-        console.log("linksMonth.all ready");
+  Tracker.autorun(function()
+    {
+      if(Session.get("s")!="")
+      {
+      	Meteor.subscribe('linksHour.all',Session.get("s"),function(){
+      		console.log("linksHour.all ready");
+      	});
+        Meteor.subscribe('linksDay.all',Session.get("s"),function(){
+          console.log("linksDay.all ready");
+        });
+        Meteor.subscribe('linksMonth.all',Session.get("s"),function(){
+          console.log("linksMonth.all ready");
+        });
         Meteor.subscribe('linksNow.all',Session.get("s"),function(){
           console.log("linksNow.all ready");
-            Tracker.autorun(updateUi);
-            });
-      });
-    });
-	});
+        });
+      }
+    }
+  );
 });
 
 Template.datiprincipali.onRendered(function() {
+      Tracker.autorun(updateUi);
   submit();
-  var firstchart = d3.select("#chart3d-1").append("svg");
-  var secondchart = d3.select("#chart3d-2").append("svg");
-  firstchart.append("g").attr("id","salesDonut");
-  secondchart.append("g").attr("id","quotesDonut");
 });
 
 Template.datiprincipali.helpers({
@@ -59,13 +63,13 @@ Template.datiprincipali.helpers({
 
   ColorConsumo() {
     var valore=Session.get("Consumo.totale");
-    if(valore==0) return "grey";
+    if(valore===0) return "grey";
     else if(valore>0) return "red";
   },
   ColorProduzione()
   {
     var valore=Session.get("Produzione.totale");
-    if(valore==0) return "grey";
+    if(valore===0) return "grey";
     else if(valore>0) return "green";
   },
 
@@ -146,7 +150,7 @@ Template.datiprincipali.events({
       radioElement.checked=false;
     })
     event.target.checked=true;
-    if (event.target.value=="Altro Periodo..")
+    if (event.target.value==="Altro Periodo..")
       new_timeMode=document.getElementById("datestart").value.substring(5,7)+ "/" + document.getElementById("datestart").value.substring(8) + " - " + document.getElementById("dateend").value.substring(5,7)+ "/" + document.getElementById("dateend").value.substring(8);
     else
       new_timeMode=event.target.value;
@@ -177,48 +181,56 @@ function submit()
 function updateUi(timeMode)
 {
   updateplants();
+  var firstchart = d3.select("#chart3d-1").append("svg");
+  var secondchart = d3.select("#chart3d-2").append("svg");
+  firstchart.append("g").attr("id","salesDonut");
+  secondchart.append("g").attr("id","quotesDonut");
   var timeMode=Session.get("timeMode");
   var info, links;
   var currentdate=new Date();
   console.log("checking in autorun..");
   console.log("CURRENT PLANT: ");
   console.log(Session.get("s"));
-  if (timeMode=="Ultime 4h")
+  if (timeMode==="Ultime 4h")
   {
-    links=Links.hour.find({s: Session.get("s")},{sort:{ts:-1}, limit:4});
+    links=Links.hour.find({s: Session.get("s")},{sort:{ts:-1}, limit:4}).fetch();
   }
-  else if (timeMode=="Giornata attuale")
+  else if (timeMode==="Giornata attuale")
   {
-    links=Links.day.find({s: Session.get("s")},{sort:{ts:-1}, limit:1});
+    links=Links.day.find({s: Session.get("s")},{sort:{ts:-1}, limit:1}).fetch();
   }
-  else if (timeMode=="Giornata precendente")
+  else if (timeMode==="Giornata di ieri")
   {
-    links=Links.day.find({s: Session.get("s")},{sort:{ts:-1}, skip:1,limit:1});
+    links=Links.day.find({s: Session.get("s")},{sort:{ts:-1}, skip:1,limit:1}).fetch();
   }
-  else if (timeMode=="Settimanale")
+  else if (timeMode==="Settimanale")
   {
-    links=Links.day.find({s: Session.get("s")},{sort:{ts:-1}, limit:7});
+    links=Links.day.find({s: Session.get("s")},{sort:{ts:-1}, limit:7}).fetch();
   }
-  else if (timeMode=="Mese attuale")
+  else if (timeMode==="Mese attuale")
   {
-    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, limit:1});
+    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, limit:1}).fetch();
   }
-  else if (timeMode=="Mese precedente")
+  else if (timeMode==="Mese precedente")
   {
-    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, skip:1,limit:1});
+    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, skip:1,limit:1}).fetch();
   }
-  else if (timeMode=="Anno attuale")
+  else if (timeMode==="Anno attuale")
   {
-    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, limit:12});
+    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, limit:12}).fetch();
   }
-  else if (timeMode=="Anno precedente")
+  else if (timeMode==="Anno precedente")
   {
-    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, skip:12,limit:12});
+    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, skip:12,limit:12}).fetch();
   }
 
+
+    console.log(links);
+
+  if(links.length>0)
+  {
   info=sumlinks(links);
 
-  console.log(links);
   console.log(info);
 
   var autoconsumo=Math.abs(info.production-Math.abs(info.ssp_production));
@@ -238,11 +250,11 @@ function updateUi(timeMode)
 
   var autoconsumo_perc, produzione_accumulo_perc, produzione_scambio_perc, consumo_accumulo_perc, consumo_scambio_perc;
 
-  if (produzione==0) autoconsumo_perc=1; else autoconsumo_perc=(autoconsumo*100)/produzione;
-  if (produzione==0) produzione_accumulo_perc=0; else produzione_accumulo_perc=(produzione_accumulo*100)/produzione;
-  if (produzione==0) produzione_scambio_perc=0; else produzione_scambio_perc=(produzione_scambio*100)/produzione;
-  if ((consumo)==0) consumo_accumulo_perc=0; else consumo_accumulo_perc=(consumo_accumulo*100)/(consumo);
-  if ((consumo)==0) consumo_scambio_perc=0; else consumo_scambio_perc=(consumo_scambio*100)/(consumo);
+  if (produzione===0) autoconsumo_perc=1; else autoconsumo_perc=(autoconsumo*100)/produzione;
+  if (produzione===0) produzione_accumulo_perc=0; else produzione_accumulo_perc=(produzione_accumulo*100)/produzione;
+  if (produzione===0) produzione_scambio_perc=0; else produzione_scambio_perc=(produzione_scambio*100)/produzione;
+  if ((consumo)===0) consumo_accumulo_perc=0; else consumo_accumulo_perc=(consumo_accumulo*100)/(consumo);
+  if ((consumo)===0) consumo_scambio_perc=0; else consumo_scambio_perc=(consumo_scambio*100)/(consumo);
 
 
 
@@ -260,7 +272,7 @@ function updateUi(timeMode)
                                ]
   );
   drawCharts();
-
+}
 }
 
 function drawCharts(){
@@ -307,9 +319,13 @@ function getplants()
 {
   var user = Meteor.user();
   var newplants;
-  if (user)
+  if (user && Meteor.user().profile)
   {
-    newplants=user.profile.plants;
+    if (Meteor.user().profile.plants)
+      newplants=user.profile.plants;
+    else {
+      newplants=[];
+    }
   }
   else
   {

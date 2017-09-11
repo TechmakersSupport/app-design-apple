@@ -10,33 +10,56 @@ var millis_in_hour =  60*60*1000;
 var millis_in_day = 24*60*60*1000;
 var millis_in_month = 30*60*60*1000;
 
+Session.set("s","");
+
+
 Template.datisecondari.onCreated(function () {
 
-  Session.set("timeMode", "Giornata attuale");
+  Session.set("timeMode", "Ultime 4h");
   Session.set("Rete.totale", 0);
   Session.set("Accumulo.totale", 0);
 
-  Meteor.subscribe('linksHour.all',Session.get("s"),function(){
-		console.log("linksHour.all ready");
-    Meteor.subscribe('linksDay.all',Session.get("s"),function(){
-      console.log("linksDay.all ready");
-      Meteor.subscribe('linksMonth.all',Session.get("s"),function(){
-        console.log("linksMonth.all ready");
+
+  Session.set("DatiRete",[
+                                 {name:"accumulo",label:"Vendita accumulo", color:"blue",value:0, absvalue:0},
+                                 {name:"produzione", label:"Vendita diretta", color:"green",value:0,absvalue:0},
+                                 {name:"consumo",label:"Acquisto per consumo", color:"red",value:0, absvalue:0}
+                               ]
+  );
+
+  Session.set("DatiAccumulo",[
+                                 {name:"scambio",label:"Vendita Enel", color:"blue",value:0, absvalue:0},
+                                 {name:"produzione", label:"Da produzione", color:"green",value:0, absvalue:0},
+                                 {name:"consumo",label:"A consumo", color:"lightblue",value:0, absvalue:0}
+                               ]
+  );
+
+  Tracker.autorun(function()
+    {
+      if(Session.get("s")!="")
+      {
+      	Meteor.subscribe('linksHour.all',Session.get("s"),function(){
+      		console.log("linksHour.all ready");
+      	});
+        Meteor.subscribe('linksDay.all',Session.get("s"),function(){
+          console.log("linksDay.all ready");
+        });
+        Meteor.subscribe('linksMonth.all',Session.get("s"),function(){
+          console.log("linksMonth.all ready");
+        });
         Meteor.subscribe('linksNow.all',Session.get("s"),function(){
           console.log("linksNow.all ready");
-            Tracker.autorun(updateUi);
-            });
-      });
-    });
-	});
+        });
+      }
+    }
+  );
+
+
 });
 
 Template.datisecondari.onRendered(function() {
+    Tracker.autorun(updateUi);
   submit();
-  var firstchart = d3.select("#chart3d-1").append("svg");
-  var secondchart = d3.select("#chart3d-2").append("svg");
-  firstchart.append("g").attr("id","salesDonut");
-  secondchart.append("g").attr("id","quotesDonut");
 });
 
 Template.datisecondari.helpers({
@@ -45,14 +68,14 @@ Template.datisecondari.helpers({
 
   ColorAccumulo() {
     var valore=Session.get("Accumulo.totale");
-    if(valore==0) return "grey";
+    if(valore===0) return "grey";
     else if(valore>0) return "blue";
     else return "lightblue";
   },
   ColorRete()
   {
-    var valore=Session.get("Rete.totale");
-    if(valore==0) return "grey";
+    var valore=Session.get("DatiRete")[2]-Session.get("DatiRete")[1];
+    if(valore===0) return "grey";
     else if(valore>0) return "red";
     else return "green";
   },
@@ -145,7 +168,7 @@ Template.datisecondari.events({
       radioElement.checked=false;
     })
     event.target.checked=true;
-    if (event.target.value=="Altro Periodo..")
+    if (event.target.value==="Altro Periodo..")
       new_timeMode=document.getElementById("datestart").value.substring(5,7)+ "/" + document.getElementById("datestart").value.substring(8) + " - " + document.getElementById("dateend").value.substring(5,7)+ "/" + document.getElementById("dateend").value.substring(8);
     else
       new_timeMode=event.target.value;
@@ -176,45 +199,51 @@ function submit()
 function updateUi(timeMode)
 {
   updateplants();
+  var firstchart = d3.select("#chart3d-1").append("svg");
+  var secondchart = d3.select("#chart3d-2").append("svg");
+  firstchart.append("g").attr("id","salesDonut");
+  //secondchart.append("g").attr("id","quotesDonut");
   var timeMode=Session.get("timeMode");
   var info, links;
   var currentdate=new Date();
-  if (timeMode=="Ultime 4h")
+  if (timeMode==="Ultime 4h")
   {
-    links=Links.hour.find({s: Session.get("s")},{sort:{ts:-1}, limit:4});
+    links=Links.hour.find({s: Session.get("s")},{sort:{ts:-1}, limit:4}).fetch();
   }
-  else if (timeMode=="Giornata attuale")
+  else if (timeMode==="Giornata attuale")
   {
-    links=Links.day.find({s: Session.get("s")},{sort:{ts:-1}, limit:1});
+    links=Links.day.find({s: Session.get("s")},{sort:{ts:-1}, limit:1}).fetch();
   }
-  else if (timeMode=="Giornata precendente")
+  else if (timeMode==="Giornata di ieri")
   {
-    links=Links.day.find({s: Session.get("s")},{sort:{ts:-1}, skip:1,limit:1});
+    links=Links.day.find({s: Session.get("s")},{sort:{ts:-1}, skip:1,limit:1}).fetch();
   }
-  else if (timeMode=="Settimanale")
+  else if (timeMode==="Settimanale")
   {
-    links=Links.day.find({s: Session.get("s")},{sort:{ts:-1}, limit:7});
+    links=Links.day.find({s: Session.get("s")},{sort:{ts:-1}, limit:7}).fetch();
   }
-  else if (timeMode=="Mese attuale")
+  else if (timeMode==="Mese attuale")
   {
-    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, limit:1});
+    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, limit:1}).fetch();
   }
-  else if (timeMode=="Mese precedente")
+  else if (timeMode==="Mese precedente")
   {
-    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, skip:1,limit:1});
+    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, skip:1,limit:1}).fetch();
   }
-  else if (timeMode=="Anno attuale")
+  else if (timeMode==="Anno attuale")
   {
-    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, limit:12});
+    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, limit:12}).fetch();
   }
-  else if (timeMode=="Anno precedente")
+  else if (timeMode==="Anno precedente")
   {
-    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, skip:12,limit:12});
+    links=Links.month.find({s: Session.get("s")},{sort:{ts:-1}, skip:12,limit:12}).fetch();
   }
-
-    info=sumlinks(links);
 
   console.log(links);
+  if(links.length>0)
+  {
+    info=sumlinks(links);
+
   console.log(info);
 
   var scambio_accumulo=0;
@@ -228,30 +257,33 @@ function updateUi(timeMode)
   var accumulo_produzione=0;
   var accumulo_consumo=0;
 
-  var scambio_accumulo_perc, scambio_produzione_perc, scambio_consumo_perc, accumulo_produzione_perc, accumulo_consumo_perc;
+  var scambio_accumulo_perc=0, scambio_produzione_perc=0, scambio_consumo_perc=0, accumulo_produzione_perc=0, accumulo_consumo_perc=0;
 
-  if (scambio==0) scambio_accumulo_perc=1; else scambio_accumulo_perc=(scambio_accumulo*100)/scambio;
-  if (scambio==0) scambio_produzione_perc=0; else scambio_produzione_perc=(scambio_produzione*100)/scambio;
-  if (scambio==0) scambio_consumo_perc=0; else scambio_consumo_perc=(scambio_consumo*100)/scambio;
-  if ((accumulo)==0) accumulo_produzione_perc=0; else accumulo_produzione_perc=(accumulo_produzione*100)/(accumulo);
-  if ((accumulo)==0) accumulo_consumo_perc=0; else accumulo_consumo_perc=(accumulo_consumo*100)/(accumulo);
+  if (scambio===0) scambio_accumulo_perc=0; else scambio_accumulo_perc=(scambio_accumulo*100)/scambio;
+  if (scambio===0) scambio_produzione_perc=0; else scambio_produzione_perc=(scambio_produzione*100)/scambio;
+  if (scambio===0) scambio_consumo_perc=0; else scambio_consumo_perc=(scambio_consumo*100)/scambio;
+  if (accumulo===0) accumulo_produzione_perc=0; else accumulo_produzione_perc=(accumulo_produzione*100)/(accumulo);
+  if (accumulo===0) accumulo_consumo_perc=0; else accumulo_consumo_perc=(accumulo_consumo*100)/(accumulo);
+
+  Session.set("Rete.totale", scambio);
+  Session.set("Accumulo.totale", accumulo);
 
 
   Session.set("DatiRete",[
-                                 {name:"accumulo",label:"Vendita accumulo", color:"blue",value:(scambio_accumulo*100)/scambio, absvalue:scambio_accumulo},
-                                 {name:"produzione", label:"Vendita diretta", color:"green",value:(scambio_produzione*100)/scambio, absvalue:scambio_produzione},
-                                 {name:"consumo",label:"Acquisto per consumo", color:"red",value:(scambio_consumo*100)/scambio, absvalue:scambio_consumo},
+                                 {name:"accumulo",label:"Vendita accumulo", color:"blue",value:scambio_accumulo_perc, absvalue:scambio_accumulo},
+                                 {name:"produzione", label:"Vendita diretta", color:"green",value:scambio_produzione_perc, absvalue:scambio_produzione},
+                                 {name:"consumo",label:"Acquisto per consumo", color:"red",value:scambio_consumo_perc, absvalue:scambio_consumo},
                                ]
   );
 
   Session.set("DatiAccumulo",[
-                                 {name:"scambio",label:"Vendita Enel", color:"blue",value:(scambio_accumulo*100)/(accumulo), absvalue:scambio_accumulo},
-                                 {name:"produzione", label:"Da produzione", color:"green",value:(accumulo_produzione*100)/(accumulo), absvalue:accumulo_produzione},
-                                 {name:"consumo",label:"A consumo", color:"lightblue",value:(accumulo_consumo*100)/(accumulo), absvalue:accumulo_consumo},
+                                 {name:"scambio",label:"Vendita Enel", color:"grey",value:0, absvalue:scambio_accumulo},
+                                 {name:"produzione", label:"Da produzione", color:"green",value:0, absvalue:accumulo_produzione},
+                                 {name:"consumo",label:"A consumo", color:"lightblue",value:0, absvalue:accumulo_consumo},
                                ]
   );
   drawCharts();
-
+}
 }
 
 function drawCharts(){
@@ -298,9 +330,13 @@ function getplants()
 {
   var user = Meteor.user();
   var newplants;
-  if (user)
+  if (user && Meteor.user().profile)
   {
-    newplants=user.profile.plants;
+    if (Meteor.user().profile.plants)
+      newplants=user.profile.plants;
+    else {
+      newplants=[];
+    }
   }
   else
   {

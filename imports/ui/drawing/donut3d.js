@@ -2,7 +2,7 @@
 	var Donut3D={};
 
 	function pieTop(d, rx, ry, ir ){
-		if(d.endAngle - d.startAngle == 0 ) return "M 0 0";
+		if(d.endAngle - d.startAngle === 0 ) return "M 0 0";
 		var sx = rx*Math.cos(d.startAngle),
 			sy = ry*Math.sin(d.startAngle),
 			ex = rx*Math.cos(d.endAngle),
